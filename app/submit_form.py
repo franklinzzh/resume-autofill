@@ -1,4 +1,4 @@
-from PyPDF2 import PdfReader
+import pdfplumber
 from pathlib import Path
 from typing import Optional, Dict, List
 
@@ -13,7 +13,7 @@ class PDFReader:
             pdf_path: PDF 文件路径
         """
         self.pdf_path = Path(pdf_path)
-        self.reader = None
+        self.pdf = None
         self.num_pages = 0
 
     def open_pdf(self) -> bool:
@@ -28,9 +28,8 @@ class PDFReader:
                 print(f"错误: 文件 {self.pdf_path} 不存在")
                 return False
 
-            self.file = open(self.pdf_path, 'rb')
-            self.reader = PdfReader(self.file)
-            self.num_pages = len(self.reader.pages)
+            self.pdf = pdfplumber.open(str(self.pdf_path))
+            self.num_pages = len(self.pdf.pages)
             print(f"成功打开 PDF: {self.pdf_path}, 总页数: {self.num_pages}")
             return True
         except Exception as e:
@@ -47,7 +46,7 @@ class PDFReader:
         Returns:
             页面文本内容，失败返回 None
         """
-        if self.reader is None:
+        if self.pdf is None:
             print("错误: PDF 尚未打开，请先调用 open_pdf()")
             return None
 
@@ -56,7 +55,7 @@ class PDFReader:
             return None
 
         try:
-            page = self.reader.pages[page_num]
+            page = self.pdf.pages[page_num]
             text = page.extract_text()
             return text
         except Exception as e:
@@ -70,14 +69,14 @@ class PDFReader:
         Returns:
             所有文本内容，失败返回 None
         """
-        if self.reader is None:
+        if self.pdf is None:
             print("错误: PDF 尚未打开，请先调用 open_pdf()")
             return None
 
         try:
             all_text = ""
             for page_num in range(self.num_pages):
-                page = self.reader.pages[page_num]
+                page = self.pdf.pages[page_num]
                 text = page.extract_text()
                 all_text += f"\n--- 第 {page_num + 1} 页 ---\n{text}"
             return all_text
@@ -92,14 +91,14 @@ class PDFReader:
         Returns:
             页面文本列表，失败返回 None
         """
-        if self.reader is None:
+        if self.pdf is None:
             print("错误: PDF 尚未打开，请先调用 open_pdf()")
             return None
 
         try:
             pages_text = []
             for page_num in range(self.num_pages):
-                page = self.reader.pages[page_num]
+                page = self.pdf.pages[page_num]
                 text = page.extract_text()
                 pages_text.append(text)
             return pages_text
@@ -114,20 +113,20 @@ class PDFReader:
         Returns:
             元数据字典，失败返回 None
         """
-        if self.reader is None:
+        if self.pdf is None:
             print("错误: PDF 尚未打开，请先调用 open_pdf()")
             return None
 
         try:
-            metadata = self.reader.metadata
+            metadata = self.pdf.metadata
             return {
-                "title": metadata.get("/Title"),
-                "author": metadata.get("/Author"),
-                "subject": metadata.get("/Subject"),
-                "creator": metadata.get("/Creator"),
-                "producer": metadata.get("/Producer"),
-                "creation_date": metadata.get("/CreationDate"),
-                "modification_date": metadata.get("/ModDate"),
+                "title": metadata.get("Title"),
+                "author": metadata.get("Author"),
+                "subject": metadata.get("Subject"),
+                "creator": metadata.get("Creator"),
+                "producer": metadata.get("Producer"),
+                "creation_date": metadata.get("CreationDate"),
+                "modification_date": metadata.get("ModDate"),
             }
         except Exception as e:
             print(f"获取元数据失败: {e}")
