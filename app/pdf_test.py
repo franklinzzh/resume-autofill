@@ -19,13 +19,12 @@ if parser.extract_from_pdf():
     print(f"原始文本长度: {len(parser.raw_text)} 字符")
 
     print("\n" + "=" * 60)
-    print("调用Claude API进行数据提取...")
+    print("调用Qwen API进行数据提取...")
     print("=" * 60)
 
     # 解析并提取结构化数据
     parsed_data = parser.parse()
 
-    print("\n✓ 提取成功")
     print("\n结构化JSON结果：")
     print("=" * 60)
     print(parser.to_json())

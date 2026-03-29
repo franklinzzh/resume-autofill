@@ -61,13 +61,24 @@ class ResumeParser:
         }
     }
 
-    def __init__(self, pdf_path: str, api_key: Optional[str] = None):
+    def __init__(
+        self,
+        pdf_path: str,
+        api_key: Optional[str] = None,
+        model: Optional[str] = None,
+        temperature: float = 0.7,
+        top_p: float = 0.8,
+    ):
         self.pdf_path = pdf_path
         self.raw_text = ""
         self.parsed_data = {}
+        self.temperature = temperature
+        self.top_p = top_p
 
-        # 初始化Qwen API密钥（从环境变量或参数获取）
+        # 优先级：参数 > 环境变量 > 默认值
+        self.model = model or os.getenv("QWEN_MODEL", "qwen-turbo")
         self.api_key = api_key or os.getenv("DASHSCOPE_API_KEY")
+
         if not self.api_key:
             raise ValueError("未找到Qwen API密钥，请设置DASHSCOPE_API_KEY环境变量")
 
@@ -89,15 +100,17 @@ class ResumeParser:
         prompt = self._build_extraction_prompt()
 
         try:
-            # 调用Qwen API
+            # 调用Qwen API，使用配置的参数
             response = Generation.call(
-                model="qwen-turbo",
+                model=self.model,
                 messages=[
                     {
                         "role": "user",
                         "content": prompt
                     }
                 ],
+                temperature=self.temperature,
+                top_p=self.top_p,
                 api_key=self.api_key
             )
 
@@ -106,8 +119,14 @@ class ResumeParser:
                 print(f"API调用失败: {response.message}")
                 return self.RESUME_SCHEMA
 
-            # 解析API返回的文本
-            response_text = response.output.choices[0].message.content
+            # 解析API返回的文本（兼容 choices 和 text 两种响应格式）
+            if response.output.choices:
+                response_text = response.output.choices[0].message.content
+            elif response.output.text:
+                response_text = response.output.text
+            else:
+                print("API返回数据为空")
+                return self.RESUME_SCHEMA
 
             # 提取JSON（可能包含在markdown代码块中）
             json_match = re.search(r'```json\s*([\s\S]*?)\s*```', response_text)
