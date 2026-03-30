@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工作申请表单 - 测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .info {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 30px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section h2 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #555;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💼 工作申请表单</h1>
+        <div class="info">
+            ℹ️ 打开浏览器扩展并点击"自动填充"来测试表单填充功能
+        </div>
+
+        <form id="applicationForm">
+            <!-- 个人信息 -->
+            <div class="form-section">
+                <h2>👤 个人信息</h2>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">名字</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="请输入名字">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">姓氏</label>
+                        <input type="text" id="lastName" name="lastName" placeholder="请输入姓氏">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="fullName">全名</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="请输入全名">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">邮箱</label>
+                        <input type="email" id="email" name="email" placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">电话</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+86 1234567890">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="city">城市</label>
+                    <input type="text" id="city" name="city" placeholder="所在城市">
+                </div>
+
+                <div class="form-group">
+                    <label for="github">GitHub</label>
+                    <input type="url" id="github" name="github" placeholder="https://github.com/username">
+                </div>
+
+                <div class="form-group">
+                    <label for="linkedin">LinkedIn</label>
+                    <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/username">
+                </div>
+            </div>
+
+            <!-- 教育背景 -->
+            <div class="form-section">
+                <h2>🎓 教育背景</h2>
+
+                <div class="form-group">
+                    <label for="university">大学名称</label>
+                    <input type="text" id="university" name="university" placeholder="大学名称">
+                </div>
+
+                <div class="form-group">
+                    <label for="major">专业</label>
+                    <input type="text" id="major" name="major" placeholder="所学专业">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="degree">学位</label>
+                        <select id="degree" name="degree">
+                            <option value="">-- 选择学位 --</option>
+                            <option value="高中">高中</option>
+                            <option value="大专">大专</option>
+                            <option value="理学学士">理学学士</option>
+                            <option value="工学学士">工学学士</option>
+                            <option value="文学学士">文学学士</option>
+                            <option value="硕士">硕士</option>
+                            <option value="博士">博士</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="graduationDate">毕业时间</label>
+                        <input type="month" id="graduationDate" name="graduationDate">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 工作经验 -->
+            <div class="form-section">
+                <h2>💼 工作经验</h2>
+
+                <div class="form-group">
+                    <label for="company">公司名称</label>
+                    <input type="text" id="company" name="company" placeholder="公司名称">
+                </div>
+
+                <div class="form-group">
+                    <label for="position">职位</label>
+                    <input type="text" id="position" name="position" placeholder="职位名称">
+                </div>
+
+                <div class="form-group">
+                    <label for="workDescription">工作描述</label>
+                    <textarea id="workDescription" name="workDescription" placeholder="简述你的工作职责和成就..."></textarea>
+                    <div class="hint">💡 扩展会自动填充你的工作内容</div>
+                </div>
+            </div>
+
+            <!-- 技能 -->
+            <div class="form-section">
+                <h2>🛠️ 技能</h2>
+
+                <div class="form-group">
+                    <label for="skills">技能（用逗号分隔）</label>
+                    <textarea id="skills" name="skills" placeholder="Java, Python, JavaScript, Spring Boot, React...">
+                    </textarea>
+                    <div class="hint">示例: Java, Python, Docker</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="programmingLanguages">编程语言</label>
+                    <textarea id="programmingLanguages" name="programmingLanguages" placeholder="Java, Python, C++..."></textarea>
+                </div>
+            </div>
+
+            <!-- 其他 -->
+            <div class="form-section">
+                <h2>📋 其他信息</h2>
+
+                <div class="form-group">
+                    <label for="coverLetter">求职信</label>
+                    <textarea id="coverLetter" name="coverLetter" placeholder="简述你为何对这个职位感兴趣..."></textarea>
+                </div>
+            </div>
+
+            <button type="submit">🚀 提交申请</button>
+        </form>
+    </div>
+
+    <script>
+        // 表单提交处理
+        document.getElementById('applicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // 收集表单数据
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+
+            console.log('表单数据:', data);
+            alert('✅ 表单已提交！\n\n请查看浏览器控制台（F12）查看填充的数据。');
+        });
+
+        // 监听来自扩展的自动填充事件
+        document.addEventListener('resumeFilled', function(e) {
+            console.log('✨ 扩展已自动填充表单');
+        });
+    </script>
+</body>
+</html>
