@@ -3,6 +3,26 @@
  * 检测表单并填充简历信息
  */
 
+// 立即标记扩展已加载 - 这必须是第一行！
+window.__resumeAutoFillLoaded = true;
+console.log('[Resume Autofill] Content script loaded');
+
+// 立即监听消息
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  console.log('[Content] 收到消息:', request.action);
+
+  if (request.action === 'fillForms') {
+    const filler = new ResumeAutoFiller();
+    filler.resumeData = request.data;
+    filler.detectAndFillForms();
+    sendResponse({ status: 'success' });
+  } else if (request.action === 'scanForms') {
+    const filler = new ResumeAutoFiller();
+    const forms = filler.scanForForms();
+    sendResponse({ forms });
+  }
+});
+
 class ResumeAutoFiller {
   constructor() {
     this.resumeData = null;
